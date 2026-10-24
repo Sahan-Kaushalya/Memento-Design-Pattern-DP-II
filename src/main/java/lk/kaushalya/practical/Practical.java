@@ -38,6 +38,15 @@ class File{
         this.fileType = fileType;
     }
 
+    public FileMemento saveToMemento() {
+        return new FileMemento(this.fileName, this.fileContent);
+    }
+
+    public void restoreFromMemento(FileMemento memento) {
+        this.fileName = memento.getFileName();
+        this.fileContent = memento.getFileContent();
+    }
+
     public void displayFileDetails() {
         System.out.println();
         System.out.println("File Name: " + fileName);
@@ -73,15 +82,19 @@ class FileCaretaker{
     private Stack<FileMemento> mementoStack = new Stack<>();
 
     public void save(File file) {
-        mementoStack.push(new FileMemento(file.getFileName(), file.getFileContent()));
+        mementoStack.push(file.saveToMemento());
         System.out.println("File saved successfully!");
     }
 
     public  void load(File file){
-        FileMemento memento = mementoStack.pop();
-        file.setFileName(memento.getFileName());
-        file.setFileContent(memento.getFileContent());
-        System.out.println("File loaded successfully!");
+        if(!mementoStack.isEmpty()){
+            FileMemento memento = mementoStack.pop();
+            file.restoreFromMemento(memento);
+            System.out.println("File loaded successfully!");
+        } else {
+            System.out.println("No saved state to load.");
+
+        }
     }
 }
 public class Practical {
