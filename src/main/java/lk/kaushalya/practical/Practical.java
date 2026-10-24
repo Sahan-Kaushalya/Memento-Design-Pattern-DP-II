@@ -69,6 +69,7 @@ final class FileMemento{
 
 // caretaker
 class FileCaretaker{
+    // Caretaker HAS-A Memento Stack
     private Stack<FileMemento> mementoStack = new Stack<>();
 
     public void save(File file) {
